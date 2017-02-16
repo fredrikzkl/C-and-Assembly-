@@ -1,6 +1,7 @@
 #include <stdio.h>
 
 extern int sum3(int a, int b, int c);
+<<<<<<< HEAD
 extern int f(int a, int b, int c);
 extern int intcmp(int a, int b);
 
@@ -21,5 +22,6 @@ int main()
   printf("intcmp(%d,%d):[%d]\n",a3,a3, intcmp(a3,a3));
 
   printf("\n");
+
   return 0;
 }
