@@ -1,0 +1,11 @@
+  .globl jumptest
+jumptest:
+  movl %al, %bh #Flytter til bh, vilkårlig annet register
+  and %bh, 11000000 #Beholder de to første bitene
+  movl 10000000, %eax #Flytter over 10 som to første biter, klar for sammenligning
+  cmpl  %al, %eax #Sammenligner
+  je  JA #Jump Equal, hopper til JA
+  jne NEI #Jump Not Equal, hopper til Nei
+
+JA:
+NEI:
