@@ -40,5 +40,90 @@ _f4:
     movl 8(%esp),%edx
     mull %edx
     addl %edx, %eax
-    divl $2, %eax
+    shrl $1,%eax  #Bitshifte dele på 2
+    ret
+
+    .globl odd
+    .globl _odd
+odd:
+_odd:
+    pushl %ebp
+    movl  %esp,%ebp #funksjonstart
+
+    movl  8(%ebp),%eax
+    andl   $0x0001, %eax
+
+    popl  %ebp
+    ret
+
+
+
+    .globl bit_not
+    .globl _bit_not
+bit_not:
+_bit_not:
+    pushl   %ebp          #Standard
+    movl    %esp,%ebp     #Funksjonstart
+
+    movl    8(%ebp),%eax
+    xorl     $0xffff,    %eax
+#Kunne også brukt notl av %eax
+
+    popl    %ebp          #Standard
+    ret                   #Retur
+
+
+    .globl  c_not
+    .globl  _c_not
+c_not:
+_c_not:
+    pushl %ebp
+    movl  %esp,%ebp
+
+    cmpl  $0x0, 8(%ebp)
+    je    equal
+
+#Ikke like:
+    movl  $0x0,%eax
+    popl  %ebp
+    ret
+
+equal:
+    movl  $0x1,%eax
+    popl  %ebp
+    ret
+
+
+    .globl  bit_and
+    .globl  _bit_and
+bit_and:
+_bit_and:
+    pushl %ebp
+    movl  %esp,%ebp
+
+    movl  8(%esp),%eax
+    andl  12(%esp),%eax
+
+    popl  %ebp
+    ret
+
+
+
+    .globl  c_and
+    .globl  _c_and
+c_and:
+_c_and:
+    pushl  %ebp
+    movl   %esp,%ebp
+
+    cmpl  $0,8(%ebp)
+    je    liknull
+    cmpl  $0,12(%ebp)
+    je    liknull
+    movl  $1,%eax
+    jmp   retur
+liknull:
+    movl  $0,%eax
+retur:
+    popl  %ebp
     ret
