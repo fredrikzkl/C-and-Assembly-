@@ -1,0 +1,107 @@
+
+
+Globale variabler - er der så lenge programmer kjører
+Parametre (legges på stakken av kalleren)
+Lokale Variabler (enten i registre eller legges på stakken av funksjonen)
+
+Faste variabler lever så lenge rogrammet kjører.
+I c:
+int a, b;
+static char c;
+long d = d;
+
+void f(void) { }
+
+"Alignment"
+Hva om vi ber Cpuen utføre
+movl  var,%eax
+der adressen var er 0x-------3?
+Noen prosessorer klarer ikke slikt, men x86 gjør det selv om det tar mer tid
+Verre er det ved skriving til minnet. På en multiprosessormaskin kan vi til med få galt svar!
+
+.align n (variabler skal være alignet, ikke krysse ordgrenser)
+
+
+Byte-rekkefølgen
+Little endian - legger første byte sist (x86 er little endian) 0 0 0 1
+Big endian - legger første byte først                          1 0 0 0
+
+Vektorrer er et sammenhengende i registeret
+for å slå opp en vektor:
+k(%eax,%ebx,n)
+som gir adressen
+%eax + n * %ebx + k
+n må være 1,2,4 eller 8
+
+
+Dt finnes en egen instrksjon for å gå i løkke et gitt antall ganger
+1: %ecx = %ecx - 1
+2: Hvis %ecx = 0, hopp
+
+eksempel:(do while)
+
+loop1:
+      loop    loop1
+
+Annet eksempel: (kan både være do while, og while)
+
+loop1:
+      decl  %ecx
+      jnz   loop1
+
+
+Pakking av bit
+Pakke flere datafelt inn i ett ord
+- spare plass
+- programmere nettverk
+- for å håndtere ulike tegnsett
+
+
+Enkeltbit
+btl - gjør ingenting
+btcl - snur bitet
+btrl - nuller bit-et
+btsl - setter bit-et
+Alle kopierer det opprinnelige bi-et til C-flagget
+btl $2,%eax     #sjekker bit 2 i eax
+
+
+Feilsøking
+Debugger
+
+- analysere en program-dump
+- vise innholdet av variabler
+- vise hvilke funkjsoner som er kalt
+- kjøre programmet en og en linje
+- kjøre til angitt stoppunkter
+
+gdb er laget for å brukes sammen med gcc.
+
+Programdumper
+Når et program dør på grunn av en feil, prøver det å skrive innholdet
+av hele prosessen på en fil slik at det kan analysere siden.
+
+ls core*
+rm core.1*
+gcc -m32 -g
+må legge til -g for å bruke gdb
+ulimit -c
+(om du får 0)
+ulimit -c unlimited
+ls -ld
+(-x bittet for gruppen andre, må være satt)
+ls -l cor*
+gdb (programnavn) core.(nr til corefilen)
+
+En enklere måte:
+
+ddd (feil) &
+(a får du opp et vindu)
+
+Egne utskrifter
+- De beste feilmeldingene får vi ved å lage dem selv
+  - Regn med at programmet ditt vil inneholde feil!
+  - Programmet feilutskrifetr du kan slå av og på
+  - Du kan kalle c funksjoner fra assemblerkode
+
+dumpreg();
