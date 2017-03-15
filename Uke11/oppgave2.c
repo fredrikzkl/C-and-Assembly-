@@ -1,7 +1,7 @@
-
 #include <stdio.h>
 
 extern int fak (int v);
+extern int tester(int i);
 
 int realfak(int v){
   int sum = 1;
@@ -14,7 +14,8 @@ int realfak(int v){
 
 int main (void)
 {
-  int i = 4;
+  int i = 5;
 
   printf("Fak(%d) = %d(%d)\n",i,fak(i),realfak(i));
+  printf("Testprogram(%d) = %d\n",i,tester(i));
 }

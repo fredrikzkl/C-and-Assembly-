@@ -26,23 +26,39 @@ end:
     ret
 
 
-
     .globl  fak
     .globl  _fak
 fak:
 _fak:
-    pushl  %ebp
-    movl   %esp,%ebp
+    pushl  %ebp         #Standard
+    movl   %esp,%ebp    #Start funksjon
 
-    movw  8(%ebp),%ax
-    movl  $1, %eax
+    movw  8(%ebp),%ax   #Setter ax lik para
+    movl  $1, %eax      #sum = 1
 
 loop2:
-    cmpw  $0,%ax
-    je    done
-    mull  %eax
-    decw  %ax
+    cmpw  $0,%ax        #if ax == 0
+    je    done          #hopp til done
+    mull  %eax          #gang eax med ax
+    decw  %ax           #ax--
+    jmp   loop2         #hopp til start
 
 done:
-    popl  %ebp
+    popl  %ebp          #funksjonavslutt
+    ret                 #retur eax
+
+
+
+    .globl tester
+    .globl _tester
+tester:
+_tester:
+    movw  4(%esp),%ax
+    movl  $0,%eax
+hey:
+    cmpw  $0x0000,%ax
+    je    fin
+    incl  %eax
+    jmp   hey
+fin:
     ret
