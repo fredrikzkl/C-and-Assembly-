@@ -10,16 +10,16 @@
 
 mod60:
 _mod60:
-	pushl	%ebp		# Standard
-	movl	%esp,%ebp	# funksjonsstart
+	pushl	%ebp					# Standard
+	movl	%esp,%ebp			# funksjonsstart
 
 	movl	8(%ebp),%edx	# Hent v
-	movl	$0,%eax		# og utvid til 32 bit.
-	idivl	v60		# Del på 60
-	movl	%edx,%eax	# og hent resten.
+	movl	$0,%eax				# og utvid til 32 bit.
+	idivl	v60						# Del på 60
+	movl	%edx,%eax			# og hent resten.
 
-	popl	%ebp		# Standard
-	ret			# retur.
+	popl	%ebp					# Standard
+	ret									# retur.
 
 	.data
-v60:	.long 60		# Konstanten 60
+v60:	.long 60				# Konstanten 60

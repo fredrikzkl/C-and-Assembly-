@@ -8,7 +8,7 @@ int main (void)
 {
   long x;
 
-  for (x = 0;  x <= 200;  x += 17) {
-    printf("%ld 'modulo' 60 = %ld\n", x, mod60(x));
+  for (x = 17;  x <= 200;  x += 17) {
+    printf("%ld % 60 = %ld\n", x, mod60(x));
   }
 }
