@@ -1,0 +1,22 @@
+--Minnehirarki--
+
+Ram / HDD
+Forkskjell?
+- Skrivehastighet (MB/S)
+- Mister informasjon når strømmen er borte
+- Hdd = mekanisk, RAM = ikke mekanisk
+- Pris (kr/mb), HDD Billigst
+
+Cache Minne?
+- Veldig rask
+- Veldig dyr
+- Størrelse= 64kb->et par mb
+
+CPU Registeret
+- Raskere og dyrere enn cach, lagrer mindre enn cache
+
+Hastigheter:
+REGISTER -10ps (pikosekunder, 10^-12)
+CACHE -ns
+RAM -100ns
+HDD - millisekunder (10^-3)
