@@ -14,7 +14,7 @@ int realfak(int v){
 
 int main (void)
 {
-  int i = 5;
+  int i = 10;
 
   printf("Fak(%d) = %d(%d)\n",i,fak(i),realfak(i));
   printf("Testprogram(%d) = %d\n",i,tester(i));

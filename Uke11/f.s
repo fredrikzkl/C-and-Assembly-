@@ -31,20 +31,22 @@ end:
 fak:
 _fak:
     pushl  %ebp         #Standard
+    pushl  %ebx         #Standard
     movl   %esp,%ebp    #Start funksjon
 
-    movw  8(%ebp),%ax   #Setter ax lik para
-    movl  $1, %eax      #sum = 1
+    movl  8(%ebp),%eax  #Setter ax lik para
+    movl  $1, %ebx      #sum = 1
 
 loop2:
-    cmpw  $0,%ax        #if ax == 0
+    cmpl  $0,%eax       #if eax == 0
     je    done          #hopp til done
-    mull  %eax          #gang eax med ax
-    decw  %ax           #ax--
-    jmp   loop2         #hopp til start
-
+    mull  %ebx          #gang eax med sum
+    decl  %eax          #eax--
+    jmp   loop2         #hopp til loop2
 done:
+    popl  %ebx          #funksjonavslutt
     popl  %ebp          #funksjonavslutt
+    movl  %ebx,%eax     #retur verdi = sum
     ret                 #retur eax
 
 
