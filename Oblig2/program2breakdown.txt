@@ -3,10 +3,10 @@ v2.0    raw
 00    00    00    00    00    00    00    00
 
 8C  - 1000 1100 Laste 4 LSB av R med 1100
-R = 0000 1100
+R = 0000 1100(C)
 
 9D -  1001 1101 Laste 4 MSB av R med 1101
-R = 1101 1100
+R = 1101(D) 1100(C)
 
 B0 - 1011 0000 Skrive R til dataminnet i addressen 0
 adresse 0 = 1101 1100
