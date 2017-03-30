@@ -1,0 +1,30 @@
+v2.0    raw
+8C    9D    B0    B3    81    91    A0    B4    
+00    00    00    00    00    00    00    00
+
+8C  - 1000 1100 Laste 4 LSB av R med 1100
+R = 0000 1100
+
+9D -  1001 1101 Laste 4 MSB av R med 1101
+R = 1101 1100
+
+B0 - 1011 0000 Skrive R til dataminnet i addressen 0
+adresse 0 = 1101 1100
+
+B3 - 1011 0011 Skrive R til dataminnet i addressen 3
+adresse 3 = 1101 1100
+
+
+81 - 1000 0001 Laste 4 lsb av r med 0001
+R = 1101 0001
+
+91 - 1001 0001 Laste MSB av r med 0001
+R = 0001 0001 
+
+A0 - Laste R fra adresse 0000
+R = 1101 1100
+
+B4 - 1011 0100 Skrive R til adresse 0100
+adresse 4 = 1101 1100
+ 
+
