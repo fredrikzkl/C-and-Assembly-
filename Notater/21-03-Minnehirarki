@@ -1,4 +1,4 @@
---Minnehirarki--
+--Minnehierarki--
 
 Ram / HDD
 Forkskjell?
@@ -20,3 +20,10 @@ REGISTER -10ps (pikosekunder, 10^-12)
 CACHE -ns
 RAM -100ns
 HDD - millisekunder (10^-3)
+
+Virtuell Minne
+- Lagringskapasiteten i RAM må deles mellom flere ulike prosesser
+  - Operativ system
+  - Driver-rutiner
+  - ...
+- En den av operativsystemet

@@ -1,0 +1,87 @@
+--Flyttall--
+
+Desimanl kan skrives på mange måter
+    8.3 * 10^6
+    83000000
++-M*G^E
+- Mantisse (M) Significand
+- Grunntall (G) Radix
+- Eksponent (E)
+- Fortegn
+Lagerer man selve tallet og størrelsen hver for seg.
+
+Desimalbrøk: 3,142321
+Binærbrøk:   11,0010010
+
+2^1 + 2^0 + 2^-3 + 2^-6
+
+Normalisert mantisse er en binærbøk med følgende egenskap
+    1<=M<G
+For binær representasjon innebærer dette at
+    1<=M<2
+
+Eksponenten lagres ned et fast tillegg slik at vi alltid får et positivt tall.
+ 3 -> 130
+-3 -> 124
+
+Standaden IEEE 754 for 32-bits flytall
+
+ 31 30         23 22       0
+ S    Eksponent     Mantise
+
+S er fortegnet; 0 for +, 1 for -
+Grunntallet er 2
+Eksponenten er på 8 bit og lagres med fast tillegg 127.
+Mantssen er helst normalisert og på 24 bit, men kun de 23 etter binærkommaet lagres.
+
+Hvordan lagres 1,0?
+1,0(10) = 1,0(2) som er normalisert
+Eksponent er 0+127=127=1111111(2).
+Fortegnet er 0.
+
+31 30     23 22           0
+0  01111111    00000000...
+
+
+12.8125(10) = 1100,1101(2) = 1,1001101*2^3(2)
+Eksponent er 3+127=130=10000010(2)
+Fortegnet er 1
+
+31 30      23 22                    0
+1   10000010     1001101000000000..
+
+Hva er det største tallet man kan lagre?
+
+0 1111110 111111111111111111111
+er omtrent 2^(254-127) *2 = 3.4*10^38
+
+Problemer med flyttall oftest bare er en tilnærmet verdi, kan dette lett gi uventede feil,
+spesielt ved subtraksjon!
+
+x86 har en egen flyt-tallsprosessor x87
+- Den har egne registre ST(0)-ST(7) som brukes som en stakk; den inneholder
+double verdier.
+ST(0)(Ofte bare kalt ST) er toppen.
+- Dne har egne instruksjoner
+- Egne flagg C0-C5
+
+Konstanter
+f betyr flytall
+
+fldz  #dytter 0.0 på stakken
+fld1  #dytter 1.0 på stakken
+
+
+
+64-bits kode
+
+Omtrent alle pcer i dag kjører en 64 bits kode.
+- Adresser er 64-bt
+- Flere registre %R8-%R15, og alle registrene i 64bits utgave
+- Operasjoner har oså en 64-bits varianter (som addq)
+- Funksjonskall har en annen protokoll (AMD64 ABI for linux og Mac, Microsoft x64 for Windows)
+
+
+-Tegnsett-
+
+Et tegnsett er en tabell over hvilket tall som skal representere tegn, feks A=65
