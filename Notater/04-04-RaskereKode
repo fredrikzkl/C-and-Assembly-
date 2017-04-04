@@ -1,0 +1,117 @@
+-- RASKERE KODE --
+
+- Siden 1996 økte de klokkefrekvensen til et punk t(rundt 2004) at
+det brukte for mye strom / for varmt, så de trakk seg tilbake til lavere
+hastiget
+
+Er ekseveringshastighet viktig?
+- Ofte lite å si, men andre ganger avgjørende for suksess.
+- Når en skikkelig stor oppgave som skal løses
+- Lager kode som mange skal bruke ofte
+
+Vi trenger en rask strlen. (Stringlength)
+
+Forsøk 1:
+
+int strlen:array(char s[])
+{
+  int ix = 0;
+  while(s[ix] != 0) ix++;
+  return ix;
+}
+
+Målemetode 1:
+Telle antall ekseveringssykler.
+Noen prosessorer teller sykler.
+rdtsc     #Legger antall sykler i %edx:%eax.
+
+Linux:
+%more /proc/cpuinfo
+Windows: Perfomrmance Infomration and Tools
+
+Konkusjon? + Nøyaktig, - moderne cpu kan redusere hastighet for å spare strøm, - os vil forstyrre
+
+Metode2: Ta tiden med stoppeklokke
+
+$.time./prog
+
+Konklusjon? +Realistisk, Ikke helt nøyaktig, tar med initeringen, forutsetter at det går få andre prosesser på maskinen.
+
+Metode3: Bruk OS-mekanismer
+
+#include <unistd.h>
+#include <sys/times.h>
+
+double cpu_time(void){
+  struct tms t;
+  times(&t);
+  return (t.tms_utime + t.tms_cutime)/(double)sysconf(_SC_CLK_TCK);
+}
+
+På eksempelmaskinen er tikk 10ms
+
+Resultat
+Enkel C-versjon med Array: 865,6ms
+
+testen ble kjørt i løkke 50 ganger for å få et rimelig nøyaktig resyltat.
+Tommelfingerregel: La testen kjøre minst 10s.
+
+
+Kan dette gjøres bere?
+
+Forsøk2: Bruke peker i stedet for array
+
+long strlen_peker(char *s){
+  char*p = s;
+  shile(*p!=0)++p;
+  return p-s;
+}
+
+Resultat:
+Med array: 865,6ms
+Med peker: 853.0ms
+
+
+Forsøk 3: Assembykode.
+Assembly: 254.7ms
+
+Forsøk 4: CISC-prosessor som x86 noen egnede instruksjoner?
+
+movsb - flytter en byte fra %esi til %edi
+cmpsb - sammenligneder %esi og %edi
+scasb - sammenlginder %edi med %al
+stosb - lagrer %al i %edi
+
+Assemblykode med repnz : 252,0ms
+
+-- OPTIMALISERING --
+Med c: -O3
+Kombiliere c kode med maximum powah
+
+Forsøk 6:
+Parallellisering
+Dagens årpsessorer har flere kjerner; kan vi utnytte det? Nei
+Vi vet ikke hvor minnet slutter
+
+Forsøk 7: Forbedre algoritmen?
+Vi kan kanskje få en raskere funksjon om vi sjekker 4 og 4 tegn
+- Vi får færre tester.
+- Reduserer antall hopp. (Hopp kan ta lang tid pga pipelinen)
+- Vi utnytter maskinens båndbredde og får færre aksesser til cachen
+
+
+Sjekke 8og8 tegn 53.7ms
+Linux inline     250.4ms
+strlen i clib 32 bit  92ms
+----''-------- 64 bit 52ms
+
+
+Amdahls lov
+Forbedrer en ax-del av ekseveringen med en faktor k, er forbedringen:
+s = 1/(1-ax) +ax/k
+
+En vellkjent tese er:
+90% av kjøretiden brukes i 10% av koden
+
+Konklusjon:
+Lesbarhet > Raskhet
