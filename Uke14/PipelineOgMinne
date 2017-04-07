@@ -1,0 +1,73 @@
+Oppgave 1:
+En klokkefrekvens av 3GHz gir en klokkeskluys på
+
+t = 1 / f
+  = 1 / 3GHz
+  = 1 / 3*10⁹
+  = 0.33*10^-9
+  = 0.33ns
+
+1000 instruksjoner gir da
+
+0.33ns * 1000 instruksjoner = 0.33us
+
+1000 Instruksjoner på 1000 klokkesykluser
+CPI = 1000/1000
+
+
+Oppgave 1 b:
+hitrate 95% av 200 instrusjoner / 1000 instruksjoner.
+10 av instruksjonene vil må ta penalty
+Dette vil si at hver miss få enekseveringstid på 20 klokkesykler
+  - 800 instruksjoner bruker 1 klokkesyklus
+  - 190 instruksjoner bruker 1 klokkesyklus
+  - 10 instruksjoner bruker 20 klokkesykler
+
+Totalt går det med 800 + 190 + 200 = 1190 klokkesykler = 0.39us
+
+CPI = 1190 / 1000 = 1.19
+
+
+Oppgave 1c:
+1000000 kokkesyler i penalty.
+1 000 000 + 1190 = 1.001.190 klokkesykler = 0,33ms
+
+Oppgave 1d:
+Små programmer -> liten hensikt å optimalisere
+Dersom den delen av programmet blir loopet i et større program,
+så ville det vært verdt å optimalisere den.
+
+
+Oppgave 2a:
+Optimal speedupen
+nkt / nt = k
+Med initiale fyllingen av pipelinen:
+kt + (n-1)t = nk / (k+1-n)
+Nye formelen:
+nkt / (k+n-1)t = nk / (k+n-1)
+
+For settingen av oppgaven blir speed-upen
+
+  = (100 * 5) / (5+100-1)
+  = 500/104
+  = 4.81
+
+Hvorav CPI blir 104/100 = 1,04
+
+
+Oppgave 2b:
+Pb = 20% (branch)
+Pt = 70%
+En branch -> 3 klokkesykler istedet for 1
+
+1000 instrukjsoner
+
+CPI er gitt av:
+  = (1-PbPt) x 1 + PbPt * 3
+  = 1 - PbPt + 3PbPt
+  = 1 + 2PbPt
+  = 1 + 2(0.2*0.7)
+  = 1 + 0.28
+  = 1.28
+
+nt * CPI
