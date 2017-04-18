@@ -39,6 +39,16 @@ _writebyte:
 	pushl	%ebp		# Standard funksjonsstart
 	movl	%esp,%ebp	#
 
+	pushl	8(%ebp)
+	pushl $1
+	pushl	$1
+
+	leal 12(%ebp),%eax
+	pushl %eax
+
+	call	fwrite #Kaller på fwrite
+	leave
+
 	popl	%ebp		# Standard
 	ret			# retur.
 

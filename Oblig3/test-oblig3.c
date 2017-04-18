@@ -51,7 +51,7 @@ void compare_byte_seqs (byte a[], int n_a, byte b[], int n_b)
     ok = FALSE;
   } else {
     int i;
-    for (i = 0;  i < n_a;  i++) 
+    for (i = 0;  i < n_a;  i++)
       if (a[i] != b[i]) ok = FALSE;
   }
 
@@ -71,7 +71,7 @@ void compare_unicode_seqs (unicode a[], int n_a, unicode b[], int n_b)
     ok = FALSE;
   } else {
     int i;
-    for (i = 0;  i < n_a;  i++) 
+    for (i = 0;  i < n_a;  i++)
       if (a[i] != b[i]) ok = FALSE;
   }
 
@@ -150,7 +150,7 @@ void test_2 (void)
   FILE *f = fopen("test2.txt", "wb");
   if (f == NULL) error("Could not create test2.txt!");
 
-  for (i = 0;  i < n_u;  i++) 
+  for (i = 0;  i < n_u;  i++)
     writeutf8char(f, u_seq_2[i]);
   fclose(f);
 
@@ -170,7 +170,7 @@ void test_3 (void)
   FILE *f = fopen("test3.txt", "wb");
   if (f == NULL) error("Could not create test3.txt!");
 
-  for (i = 0;  i < n_u;  i++) 
+  for (i = 0;  i < n_u;  i++)
     writeutf8char(f, u_seq_3[i]);
   fclose(f);
 
@@ -190,7 +190,7 @@ void test_4 (void)
   FILE *f = fopen("test4.txt", "wb");
   if (f == NULL) error("Could not create test4.txt!");
 
-  for (i = 0;  i < n_u;  i++) 
+  for (i = 0;  i < n_u;  i++)
     writeutf8char(f, u_seq_4[i]);
   fclose(f);
 
