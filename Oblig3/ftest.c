@@ -24,9 +24,11 @@ void test_1 (void)
   int i;
   FILE *f = fopen("test1.txt", "wb");
   if (f == NULL) error("Could not create test1.txt!");
-
-  for (i = 0;  i < n_bytes;  i++)
+  //printf("For loop goes here:\n");
+  for (i = 0;  i < n_bytes;  i++){
+    printf("\nTrying to add: %d\n" + b_seq_1[i]);
     writebyte(f, b_seq_1[i]);
+  }
   fclose(f);
 
   //test_byte_file("test1.txt", b_seq_1, n_bytes);

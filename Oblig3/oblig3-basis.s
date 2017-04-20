@@ -39,16 +39,18 @@ _writebyte:
 	pushl	%ebp		# Standard funksjonsstart
 	movl	%esp,%ebp	#
 
-	pushl	8(%ebp)
-	pushl $1
-	pushl	$1
+	pushl 8(%ebp) # Legger adressen til filen på stakken
 
-	leal 12(%ebp),%eax
-	pushl %eax
+	pushl $1 # Legger tallet 1 på stakken
+	pushl	$1 # Legger tallet 1 på stakken
+	# Så langt oppfylt fwrite(.., 1, 1 ,f)
 
-	call	fwrite #Kaller på fwrite
-	leave
+	leal 12(%ebp),%eax # Henter pekeren til første parameter og flytter til eax
+	pushl %eax # Legger pekeren på stakken
 
+	call	fwrite # fwrite(&b,1,1,f);
+
+	addl $16, %esp # Flytter pekeren 4 steg opp (fjerner parametere fra stakken)
 	popl	%ebp		# Standard
 	ret			# retur.
 
@@ -61,6 +63,8 @@ _writebyte:
 writeutf8char:
 	pushl	%ebp		# Standard funksjonsstart
 	movl	%esp,%ebp	#
+
+
 
 wu8_x:	popl	%ebp		# Standard
 	ret			# retur.
