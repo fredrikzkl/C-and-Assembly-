@@ -8,6 +8,7 @@
 typedef unsigned char byte;
 
 extern void writebyte(FILE *f, byte b);
+extern void writeutf8char (FILE *f, unicode u);
 
 void error (char *message)
 {
@@ -32,6 +33,25 @@ void test_1 (void)
   fclose(f);
 
   //test_byte_file("test1.txt", b_seq_1, n_bytes);
+}
+
+/* Test #2 */
+unicode u_seq_2[] = { 0x24, 0x20, 0x41, 0x3d, 0x32, 0x78 };  /* "$ A=2x" */
+byte    b_seq_2[] = { '$', ' ', 'A', '=', '2', 'x' };
+
+void test_2 (void)
+{
+  int n_u = sizeof(u_seq_2)/sizeof(u_seq_2[0]);
+  int n_b = sizeof(b_seq_2)/sizeof(b_seq_2[0]);
+  int i;
+  FILE *f = fopen("test2.txt", "wb");
+  if (f == NULL) error("Could not create test2.txt!");
+
+  for (i = 0;  i < n_u;  i++)
+    writeutf8char(f, u_seq_2[i]);
+  fclose(f);
+
+  //test_byte_file("test2.txt", b_seq_2, n_b);
 }
 
 int main(void)

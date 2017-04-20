@@ -64,7 +64,13 @@ writeutf8char:
 	pushl	%ebp		# Standard funksjonsstart
 	movl	%esp,%ebp	#
 
+	pushl 8(%esp) # Legger fila på første param
+	
+	leal 12(%ebp)%eax # Legger adressen til unicoden på eax
+	andl %eax, 0x0f
 
+
+	call writebyte
 
 wu8_x:	popl	%ebp		# Standard
 	ret			# retur.
