@@ -6,6 +6,7 @@
 #define TRUE  1
 
 typedef unsigned char byte;
+typedef unsigned long unicode;
 
 extern void writebyte(FILE *f, byte b);
 extern void writeutf8char (FILE *f, unicode u);
@@ -27,7 +28,6 @@ void test_1 (void)
   if (f == NULL) error("Could not create test1.txt!");
   //printf("For loop goes here:\n");
   for (i = 0;  i < n_bytes;  i++){
-    printf("\nTrying to add: %d\n" + b_seq_1[i]);
     writebyte(f, b_seq_1[i]);
   }
   fclose(f);
@@ -36,7 +36,9 @@ void test_1 (void)
 }
 
 /* Test #2 */
-unicode u_seq_2[] = { 0x24, 0x20, 0x41, 0x3d, 0x32, 0x78 };  /* "$ A=2x" */
+//unicode u_seq_2[] = { 0x24, 0x20, 0x41, 0x3d, 0x32, 0x78 };  /* "$ A=2x" */
+unicode u_seq_2[] = { 0x24 };  /* "$ A=2x" */
+
 byte    b_seq_2[] = { '$', ' ', 'A', '=', '2', 'x' };
 
 void test_2 (void)
@@ -58,5 +60,6 @@ int main(void)
 {
     printf("Test Initiated\n");
     test_1();
+    test_2();
 
 }

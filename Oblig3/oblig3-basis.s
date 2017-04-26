@@ -64,13 +64,32 @@ writeutf8char:
 	pushl	%ebp		# Standard funksjonsstart
 	movl	%esp,%ebp	#
 
-	pushl 8(%esp) # Legger fila på første param
-	
-	leal 12(%ebp)%eax # Legger adressen til unicoden på eax
-	andl %eax, 0x0f
+	movl	12(%ebp),%eax # Flytter andre parameter til eax
 
+	cmpl $0x7F, %eax 	 	# om mindre enn 0x7F
+	jl		wu8_1byte	 	 	# ..hopp til 1 byte
 
+	cmpl  $0x7FF, %eax  # om mindre enn 7FF
+	jl		wu8_2byte		 	# ..hopp til 2 byte
+
+	cmpl  $0xFFFF, %eax # om mindre enn FFFF
+	jl		wu8_3byte		  # ..hopp til 3 byte
+
+	jmp wu8_4byte 			# Må være 4 byte, hopp dit
+
+wu8_1byte:
+	pushl %eax
+	pushl	8(%ebp)
+	jmp	 wu8_x
+
+wu8_2byte:
+
+wu8_3byte:
+
+wu8_4byte:
+
+wu8_x:
 	call writebyte
-
-wu8_x:	popl	%ebp		# Standard
-	ret			# retur.
+	addl	$8, %esp
+	popl	%ebp		# Standard
+	ret						# retur.

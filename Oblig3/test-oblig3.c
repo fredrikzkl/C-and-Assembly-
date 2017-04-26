@@ -294,11 +294,13 @@ int main (void)
 {
   printf("Test 1 (write a byte):         ");  test_1();
   printf("Test 2 (write 1-byte utf-8):   ");  test_2();
+  /*
   printf("Test 3 (write 2-byte utf-8):   ");  test_3();
   printf("Test 4 (write 3+4-byte utf-8): ");  test_4();
   printf("Test 5 (read a byte):          ");  test_5();
   printf("Test 6 (read 1-byte utf-8):    ");  test_6();
   printf("Test 7 (read 2-byte utf-8):    ");  test_7();
   printf("Test 8 (read 3+4-byte utf-8):  ");  test_8();
+  */
   return 0;
 }
