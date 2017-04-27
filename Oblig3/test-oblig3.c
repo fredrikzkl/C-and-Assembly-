@@ -258,6 +258,7 @@ void test_7 (void)
   while (n_data < 200) {
     long u = readutf8char(f);
     if (u < 0) break;
+
     data[n_data++] = (unicode)u;
   }
   fclose(f);
@@ -275,6 +276,7 @@ void test_8 (void)
   int n_u_seq_4 = sizeof(u_seq_4)/sizeof(u_seq_4[0]);
   FILE *f;
 
+
   create_byte_file ("test8.txt", b_seq_4, n_b_seq_4);
   f = fopen("test8.txt", "rb");
   if (f == NULL) error("Could not read test8.txt!");
@@ -285,6 +287,7 @@ void test_8 (void)
   }
   fclose(f);
 
+
   compare_unicode_seqs(data, n_data, u_seq_4, n_u_seq_4);
 }
 
@@ -294,8 +297,9 @@ int main (void)
 {
   printf("Test 1 (write a byte):         ");  test_1();
   printf("Test 2 (write 1-byte utf-8):   ");  test_2();
-  /*
+
   printf("Test 3 (write 2-byte utf-8):   ");  test_3();
+  /*
   printf("Test 4 (write 3+4-byte utf-8): ");  test_4();
   printf("Test 5 (read a byte):          ");  test_5();
   printf("Test 6 (read 1-byte utf-8):    ");  test_6();

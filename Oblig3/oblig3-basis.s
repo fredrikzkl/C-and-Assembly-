@@ -10,8 +10,31 @@
 readbyte:
 	pushl	%ebp		# Standard funksjonsstart
 	movl	%esp,%ebp	#
+/*
+	db		'c'
 
-rb_x:	popl	%ebp		# Standard
+	pushl 8(%ebp) # legger adressen til filen
+
+	pushl $1 # Pusher arguent 3 (som skal være 1)
+	pushl $1 # Pusher arguemt 2 (skal også være 1)
+
+	pushl 'c' # Legger itl byten på stakken
+
+	call 	fread 		 # caller på fread funksjonen, return veriden blir lagt i eax
+	cmpl	$0, %eax   # sammenligner med 0
+	jg		rb_greater # if > 0
+
+	movl	$1, %eax # setter eax til 1
+	neg		%eax		 # -1
+	jmp rb_x 		   # returnerer -1
+
+rb_greater:
+	movl 'c', %eax # returnerer byten
+	jmp rb_x
+*/
+rb_x:
+	addl $16, %ebp # flytter opp stakk pekeren
+	popl	%ebp		# Standard
 	ret			# retur.
 
 	.globl	readutf8char
@@ -24,6 +47,14 @@ readutf8char:
 	pushl	%ebp		# Standard funksjonsstart
 	movl	%esp,%ebp	#
 
+	pushl 	8(%ebp) # legger filen som skal leses på stakken (arguemnt 1)
+	call 		writebyte
+	cmpl 		$0, %eax # sammenligner returverdien med 0
+	jl			ru8_end # om mindre enn 0, da er den -1, da returner metoden -1
+
+
+
+ru8_end:
 	popl	%ebp		# Standard
 	ret			# retur.
 
@@ -64,32 +95,41 @@ writeutf8char:
 	pushl	%ebp		# Standard funksjonsstart
 	movl	%esp,%ebp	#
 
+	movl	$0, %eax
 	movl	12(%ebp),%eax # Flytter andre parameter til eax
 
-	cmpl $0x7F, %eax 	 	# om mindre enn 0x7F
+	cmpl $0x80, %eax 	 	# om mindre enn 0x7F
 	jl		wu8_1byte	 	 	# ..hopp til 1 byte
 
-	cmpl  $0x7FF, %eax  # om mindre enn 7FF
+	cmpl  $0x800, %eax  # om mindre enn 7FF
 	jl		wu8_2byte		 	# ..hopp til 2 byte
 
-	cmpl  $0xFFFF, %eax # om mindre enn FFFF
+	cmpl  $0x10000, %eax # om mindre enn FFFF
 	jl		wu8_3byte		  # ..hopp til 3 byte
 
 	jmp wu8_4byte 			# Må være 4 byte, hopp dit
 
 wu8_1byte:
+	andl $0x7f,%eax
+	jmp	 wu8_x
+wu8_2byte:
+	orl  $0xC080,%eax  # or edx med 1100000 10000000, så de som må være 1 blir 1
+	andl $0xDFBF,%eax  # and ex med 1101111 10111111, så de som skal være 0 blir 0
+	jmp	 wu8_x
+wu8_3byte:
+	orl $0xE08080,%eax  # or edx med 1110... 10.. 10...
+	andl $0xEFBFBF,%eax  # and'er for å sette nullene til null
+	jmp	 wu8_x
+wu8_4byte:
+	orl $0xF0808080,%eax  # samme prosedyre
+	andl $0xF7BFBFBF,%eax
+	jmp	 wu8_x
+wu8_x:
+
 	pushl %eax
 	pushl	8(%ebp)
-	jmp	 wu8_x
-
-wu8_2byte:
-
-wu8_3byte:
-
-wu8_4byte:
-
-wu8_x:
 	call writebyte
-	addl	$8, %esp
+
+	addl	$8, %esp # flytter stakk pekeren tilbake
 	popl	%ebp		# Standard
 	ret						# retur.
