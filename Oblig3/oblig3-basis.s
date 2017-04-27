@@ -1,5 +1,8 @@
 	.extern	fread, fwrite
 
+	.data
+		c_byte:	.byte
+
 	.text
 	.globl	readbyte
  # Navn:	readbyte
@@ -11,31 +14,32 @@ readbyte:
 	pushl	%ebp		# Standard funksjonsstart
 	movl	%esp,%ebp	#
 
-	db		'c'
-
 	pushl 8(%ebp) # legger adressen til filen
 
 	pushl $1 # Pusher arguent 3 (som skal være 1)
 	pushl $1 # Pusher arguemt 2 (skal også være 1)
 
-	pushl 'c' # Legger itl byten på stakken
+	leal 	c_byte, %eax # Addressen til min variabel c_byte flyttet eax
+	pushl %eax # Legger pusher adressen til c_byte
 
 	call 	fread 		 # caller på fread funksjonen, return veriden blir lagt i eax
 	cmpl	$0, %eax   # sammenligner med 0
-	jg		rb_greater # if > 0
-
+	jg		rb_greater # if > 0, inneholdt byten noe?
+	# else: returnerer -1
 	movl	$1, %eax # setter eax til 1
 	neg		%eax		 # -1
 	jmp rb_x 		   # returnerer -1
-
 rb_greater:
-	movl 'c', %eax # returnerer byten
-	jmp rb_x
+	movl c_byte, %eax # flytter verdien som ble lest til eax
+	andl $0xff, %eax # masker 8 første bitene
+	jmp rb_x # returnerer eax
 
 rb_x:
-	addl $16, %ebp # flytter opp stakk pekeren
+	addl $16, %esp # flytter opp stakk pekeren
 	popl	%ebp		# Standard
 	ret			# retur.
+
+
 
 	.globl	readutf8char
  # Navn:	readutf8char
@@ -47,13 +51,23 @@ readutf8char:
 	pushl	%ebp		# Standard funksjonsstart
 	movl	%esp,%ebp	#
 
-	pushl 	8(%ebp) # legger filen som skal leses på stakken (arguemnt 1)
-	call 		writebyte
-	cmpl 		$0, %eax # sammenligner returverdien med 0
-	jl			ru8_end # om mindre enn 0, da er den -1, da returner metoden -1
+	pushl 8(%ebp) # Legger adressen til filen på stakken
+
+	call readbyte
+	movb %al, %dl
+	call readbyte
+	movb %al, %dh
 
 
+	addl $4,%esp # flytter opp stakk pekeren
 
+	cmpl $0, %eax
+	jl	 no_val
+	jmp	 ru8_end
+
+no_val:
+	movl	$1, %eax # setter eax til 1
+	neg		%eax		 # -1
 ru8_end:
 	popl	%ebp		# Standard
 	ret			# retur.
