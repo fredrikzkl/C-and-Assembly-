@@ -54,21 +54,35 @@ readutf8char:
 	pushl 8(%ebp) # Legger adressen til filen på stakken
 
 	call readbyte
-	movb %al, %dl
-	call readbyte
-	movb %al, %dh
 
+	cmpl $0, %eax # Sjekker om -1
+	jl	 no_val # hopper til no_val om -1
 
-	addl $4,%esp # flytter opp stakk pekeren
+	cmpl  $0x7f, %eax 	# om større enn 0x7F, da er flere bytes
+	jg		ru8_2b	 		 	# ..hopp til 1 byte
 
-	cmpl $0, %eax
-	jl	 no_val
 	jmp	 ru8_end
+ru8_2b:
+	# Siden den er høyere, må byten bli plassert en noen steg opp
+	movl %eax, %ebx # Legger over den leste byten til edx
+	sall $6, %ebx	  # flytter den 6 bits opp, siden den første byten har 2 plasser der den andre byten skal bli fyllt inn
+	# Jeg har da 0011 0xxx xx00 0000
+	andl $0x7c0, %ebx # masker med 0000 0111 1100 000, fjerner MSB
+	# nå har jeg 0000 0xxx xx00 0000
+	call readbyte   # henter neste byte
+	# eax:			 0000 0000 10xx xxxx
+	andl $0x3f, %eax # fjerner de 2 msb i den nye byten
+	# eax:			 0000 0000 00xx xxxx
+	orl  %eax, %ebx # legger den inn i
+	# ebx:			 0000 0xxx xxxx xxxx
+	movl %ebx, %eax # flytter ebx til returadressen
+	jmp	 ru8_end    # hopper til sluttmetoden
 
 no_val:
 	movl	$1, %eax # setter eax til 1
 	neg		%eax		 # -1
 ru8_end:
+	addl $4,%esp # flytter opp stakk pekeren
 	popl	%ebp		# Standard
 	ret			# retur.
 
