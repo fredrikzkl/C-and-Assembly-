@@ -58,10 +58,49 @@ readutf8char:
 	cmpl $0, %eax # Sjekker om -1
 	jl	 no_val # hopper til no_val om -1
 
-	cmpl  $0x7f, %eax 	# om større enn 0x7F, da er flere bytes
-	jg		ru8_2b	 		 	# ..hopp til 1 byte
+	cmpl  $0xf0, %eax # om større enn 0xffff, er det 4 bytes på vei
+	jge 		ru8_4b
 
-	jmp	 ru8_end
+	cmpl	$0xe0, %eax 	# om større enn 0x7ff, må det være 3 bytes
+	jge	  ru8_3b
+
+	cmpl  $0xc0, %eax 	# om større enn 0x7F, da er flere bytes
+	jge		ru8_2b	 		 	# ..hopp til 1 byte
+
+	jmp	  ru8_end # kun en byte, return that shit
+
+ru8_4b:
+	# Bruker samme metode som 3+2 bytes
+	movl %eax, %ebx # Legger over den leste byten til edx
+	andl $0x7, %ebx # masker med 0000 0000 0000 0111, fjerner MSB
+	sall $18, %ebx # flytter 18 plasser opp (plass til 3 andre bytes)
+	call readbyte # henter andre byten
+	andl $0x3f, %eax # masker den med 0011 1111
+	sall $12, %eax # flytter 12 plasser opp (plass til 2 andre bytes)
+	orl  %eax, %ebx # legger inn i ebx
+	call readbyte # henter siste byte
+	andl $0x3f, %eax # masker den med 0011 1111
+	sall $6, %eax # flytter 12 plasser opp (plass til 2 andre bytes)
+	orl  %eax, %ebx # legger inn i ebx
+	call readbyte # henter siste byte
+	andl $0x3f, %eax # masker den med 0011 1111
+	orl  %eax, %ebx # legger inn i ebx
+	movl %ebx, %eax # legger over i eax
+	jmp	 ru8_end    # hopper til sluttmetoden
+ru8_3b:
+	# Bruker samme metode som 2bytes
+	movl %eax, %ebx # Legger over den leste byten til edx
+	andl $0xf, %ebx # masker med 0000 0000 0000 1111, fjerner MSB
+	sall $12, %ebx # flytter 12 plasser opp (plass til 2 andre bytes)
+	call readbyte # henter andre byten
+	andl $0x3f, %eax # masker den med 0011 1111
+	sall $6, %eax # flytter 12 plasser opp (plass til 2 andre bytes)
+	orl  %eax, %ebx # legger inn i ebx
+	call readbyte # henter siste byte
+	andl $0x3f, %eax # masker den med 0011 1111
+	orl  %eax, %ebx # legger inn i ebx
+	movl %ebx, %eax # legger over i eax
+	jmp	 ru8_end    # hopper til sluttmetoden
 ru8_2b:
 	# Siden den er høyere, må byten bli plassert en noen steg opp
 	movl %eax, %ebx # Legger over den leste byten til edx

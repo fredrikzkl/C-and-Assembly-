@@ -299,7 +299,7 @@ int main (void)
   printf("Test 5 (read a byte):          ");  test_5();
   printf("Test 6 (read 1-byte utf-8):    ");  test_6();
   printf("Test 7 (read 2-byte utf-8):    ");  test_7();
-  /*
-  printf("Test 8 (read 3+4-byte utf-8):  ");  test_8();*/
+
+  printf("Test 8 (read 3+4-byte utf-8):  ");  test_8();
   return 0;
 }
